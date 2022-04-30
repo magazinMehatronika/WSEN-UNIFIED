@@ -32,3 +32,5 @@ Example readout code:
   ## Examples
   
   Included in the library are all examples provided by Wurth, as well as an example created to utilize two separate sensors reading in continous mode. For more in-depth explanations about sensor modes, consult the parent repository.
+  
+  Wurth examples are located inside a new folder structure in the library .zip file, while our multi-sensor example can be downloaded from this repository's root folder.
