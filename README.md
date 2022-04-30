@@ -1,72 +1,34 @@
-![WE Logo](assets/WE_Logo_small_t.png)
+# WSEN-UNIFIED modified library for WE Sensor FeatherWing
 
-# WE Sensor libraries for Arduino
+The WSEN-UNIFIED is a fork of the original Wurth Sensor library for Wurth eiSos sensors, providing a combined way of reading from multiple sensors which can be found on the Wurth Sensor FeatherWing.
 
-[Würth Elektronik](https://www.we-online.com/wco) offers a range of [sensors](https://www.we-online.de/katalog/en/wco/sensors) including temperature, pressure, humidity and acceleration sensor. In order to enable quick prototyping and evaluation of these sensors, Würth Elektronik offers libraries for the [Arduino platform](https://www.arduino.cc/). Arduino is an open-source electronics platform based on easy-to-use hardware and software ideal for rapid prototyping. The sensor [evaluation boards](https://www.we-online.de/katalog/en/wco/sensors/evaluation_boards_wsen), the [Arduino shield](https://www.we-online.de/katalog/en/wco/sensors/evaluation_boards_wsen) and these libraries provide all the tools necessary to get started with your application. 
+We tried optimizing the library for use with several sensors at once. There were several minor issues we tried to addess by unifying the four separate libraries (as offered by Wurth in the original repo).
 
-## Hardware
+This library might contain older code revisions and will not be actively mantained.
 
-### WE sensor evaluation boards
+This library contains code created by the Wurth eiSos team.
 
-The evaluation boards for sensors provide a versatile hardware platform to enable easy verification of sensors. The sensor evaluation board can be used in multiple configurations,
-* Placed on a breadboard
-* Connected to Raspberry-Pi using the [Amber-Pi](https://www.we-online.de/katalog/en/AMBER_PI_SENSORS)
-* Connected to [Arduino Uno](https://store.arduino.cc/arduino-uno-rev3) or [Arduino DUE](https://store.arduino.cc/arduino-due) using the Arduino shield.
+## Usage notes
 
-### WE Sensors shield for Arduino
+Installation of the library follows the same process as all manual Arduino library installations. Simply select the /libraries/WSEN-UNIFIED.zip file from the library manager.
 
-The WE sensor shield acts as an adapter board for connecting WE sensor evaluation boards to Arduino UNO/DUE. It is a versatile hardware platform that offers I2C and SPI interfaces at 3.3 V and 5 V signal levels. Additionally, this board can be extended to have a wireless connectivity module from Würth Elektronik ([Thyone-I](https://www.we-online.de/katalog/en/THYONE-I)/[Proteus-III](https://www.we-online.de/katalog/en/PROTEUS-III)).
+Once that is complete, you should see WSEN_UNIFIED under the library list. Examples should also be loaded. If not, restart your IDE.
 
-![Arduino shield](assets/ArduinoShield.png)
+Examples are now sorted under the same folder, but in multiple subfolders with more descriptive names. To include multiple library files, use the same header files as you would normally.
 
-## Sensor libraries for the Arduino platform 
+Make sure to manually tell the MCU to set I2C addresses by using the `I2CSetAddress(<addr>);` command before every readout.
 
-This repository contains the source code for all the sensor libraries from Würth Elektronik. Each library is placed under the folder with WSEN-XXXX where XXXX corresponds to the sensor type.
+Example readout code:
 
-|Match code   | Sensor type  |
-|---|---|
-|[WSEN-TIDS](https://www.we-online.de/katalog/en/WSEN-TIDS)  | Temperature sensor  |
-|[WSEN PADS](https://www.we-online.de/katalog/en/WSEN-PADS)  |Absolute pressure sensor |
-|[WSEN-HIDS](https://www.we-online.de/katalog/en/WSEN-HIDS)   | Humidity sensor |
-|[WSEN-ITDS](https://www.we-online.de/katalog/en/WSEN-ITDS)|Acceleration sensor|
-|[WSEN-PDUS](https://www.we-online.de/katalog/en/WSEN-PDUS)  | Differential pressure sensor  |
+```cpp
+  // Read and calculate the temperature
+  I2CSetAddress(TIDS_ADDRESS_I2C_1); //Manual address set for TIDS; not implemented in the read_temperature() method
+  float temperature = sensor.read_temperature();
 
-Each of these folders contain two sub folders
-
-* Src - This folder contains the source code for the sensor library and all the necessary drivers
-
-* Examples - This folder contains sample code for using the library.
-
-### Importing the WE sensor library into Arduino IDE
-
-1. Download this repository. Unzip the package to desired location.
-
-2. Open the Arduino IDE. 
-
-3. As shown in the image below, navigate to **Sketch > Include Library > Add .ZIP Library.** in the Arduino IDE. Select the option to **"Add .ZIP Library"**. Select the sensor library package of interest from [libraries](libraries) folder and import it to the workspace.
-
-![AddZip](assets/addZip.png)
-
-4. On successful import, on the **Sketch > Include Library menu** menu, you should see, as shown in the image bellow, the added libraries at the bottom of the drop-down menu.  
-
-![libraryView](assets/libView.png)
-Now, the libraries are ready to be used in your sketch.  
-
-### Running the example code
-
-After adding the needed library to the sketch, you are able now to run one sensor example and get the corresponding Output Values.  
-The examples can be found under **File>Examples>Example from custom libraries** 
-
-1. Open the example of interest by browsing to **File>Examples>Example from custom libraries** 
-
-![ExampleView](assets/example.png)
-
-2. Select the correct COM and programming port for the Arduino.
-
-![ExampleView](assets/comPort.png)
-
-3. Compile and upload the example selected.
-
-![UplaodView](assets/upload.png)
-
-4. The output can be viewed on the serial monitor.
+  I2CSetAddress(HIDS_ADDRESS_I2C_0); //Manual address set for HIDS; not implemented in the get_Humidity() method
+  float humidity = sensor2.get_Humidity();
+  ```
+  
+  ## Examples
+  
+  Included in the library are all examples provided by Wurth, as well as an example created to utilize two separate sensors reading in continous mode. For more in-depth explanations about sensor modes, consult the parent repository.
